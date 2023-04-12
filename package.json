@@ -1,0 +1,23 @@
+{
+  "name": "greg-lawrence-r3f-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "greg-lawrence-r3f-portfolio",
+  "author": "bluhurr",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^5.8.1",
+    "gatsby-plugin-sitemap": "^6.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
