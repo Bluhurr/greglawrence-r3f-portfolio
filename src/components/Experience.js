@@ -11,8 +11,8 @@ import {
 } from "@react-three/postprocessing";
 import {
   Environment,
-  Shadow,
   MeshTransmissionMaterial,
+  ContactShadows,
 } from "@react-three/drei";
 
 function InstancedSpheres({ count = 200 }) {
@@ -27,8 +27,17 @@ function InstancedSpheres({ count = 200 }) {
     <>
       <instancedMesh castShadow ref={ref} args={[null, null, count]}>
         <sphereGeometry args={[1.4, 17, 17]} />
-        <meshStandardMaterial roughness={0} color="#0080df" />
+        <meshStandardMaterial fog={false} roughness={0} color="#0080df" />
       </instancedMesh>
+
+      {/*
+      <ContactShadows
+        scale={100}
+        opacity={1}
+        position={[0, -viewport.height / 2 + 0.3, 0]}
+        color="#000"
+      />
+      */}
     </>
   );
 }
@@ -114,20 +123,42 @@ function MouseSphere() {
 function Ground({
   position,
   rotation = [-Math.PI * 0.5, 0, 0],
-  color = "#06B4FF",
+  color = "#00483f",
 }) {
   const { viewport } = useThree();
 
   return (
     <>
       <mesh
-        scale={[1000, 100, 0]}
-        position={[0, -viewport.height / 2 + 0.6, -12]}
+        scale={[1000, 100, 10]}
+        position={[0, -viewport.height / 2 + 0.3, 0]}
         rotation={rotation}
-        receiveShadow
       >
         <planeGeometry />
-        <meshStandardMaterial color="white" />
+        <meshPhongMaterial
+          attach="material"
+          receiveShadow
+          opacity={0.4}
+          transparent
+          fog={false}
+          color={color}
+        />
+      </mesh>
+
+      <mesh
+        scale={[1000, 100, 10]}
+        position={[0, -viewport.height / 2 + 0.3, -100]}
+        rotation={[0, 0, 0]}
+      >
+        <planeGeometry />
+        <meshPhongMaterial
+          attach="material"
+          receiveShadow
+          opacity={0.4}
+          transparent
+          fog={false}
+          color={color}
+        />
       </mesh>
     </>
   );
@@ -141,41 +172,43 @@ function Experience() {
     >
       <Canvas
         shadows
-        camera={{ position: [0, 0, 20], fov: 50, near: 1, far: 100 }}
+        camera={{
+          position: [0, 0, 20],
+          fov: 50,
+          near: 0.1,
+          far: 100,
+        }}
       >
-        <fog attach="fog" near={25} far={30} color="#08539f" />
+        <fog attach="fog" near={23} far={28} color="#08539f" />
         <Environment preset="warehouse" blur={1} resolution={256} />
         {/*<color attach="background" args={["#147AC5"]} />*/}
 
-        <ambientLight intensity={0.2} />
-        <spotLight
+        <ambientLight intensity={0} />
+        <directionalLight
           color="#06B4FF"
-          position={[0, 10, 6]}
-          intensity={1}
-          angle={Math.PI / 4}
-          penumbra={1}
-          decay={1}
+          position={[0, 10, -10]}
+          intensity={4}
           castShadow
         />
 
-        <Physics
-          gravity={[0, -30, 0]}
-          defaultContactMaterial={{ restitution: 0.5 }}
-        >
-          <group position={[0, 0, -10]}>
-            <Mouse />
-            <MouseSphere />
-            <Borders />
-            <Suspense>
-              <InstancedSpheres count={175} />
-            </Suspense>
-          </group>
-        </Physics>
+        <Suspense>
+          <Physics
+            gravity={[0, -30, 0]}
+            defaultContactMaterial={{ restitution: 0.5 }}
+          >
+            <group position={[0, 0, -10]}>
+              <Mouse />
+              <MouseSphere />
+              <Borders />
+              <InstancedSpheres castShadow count={175} />
+            </group>
+          </Physics>
+        </Suspense>
 
         <EffectComposer>
           <SSAO
-            radius={0.08}
-            intensity={30}
+            radius={0.1}
+            intensity={40}
             luminanceInfluence={0.4}
             color="#025d8d"
           />
