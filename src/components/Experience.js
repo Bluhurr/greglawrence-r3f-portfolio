@@ -44,7 +44,7 @@ function Borders() {
   return (
     <>
       <Plane
-        position={[0, -viewport.height / 2 + 0.4, 0]}
+        position={[0, -viewport.height / 2 + 0.1, 0]}
         rotation={[-Math.PI * 0.5, 0, 0]}
       />
       <Plane
@@ -135,7 +135,10 @@ function Ground({
 
 function Experience() {
   return (
-    <div className="flex h-[90%] bg-gradient-to-t from-[#08539f] from-34% to-[#00aafd] relative">
+    <div
+      id="gradient-bg"
+      className="flex h-[90%] bg-gradient-to-t from-[#00164b] from-5% from-[#004b98] from-15% via-[#00aaff] via-35% to-[#0068ab] to-114% relative"
+    >
       <Canvas
         shadows
         camera={{ position: [0, 0, 20], fov: 50, near: 1, far: 100 }}
