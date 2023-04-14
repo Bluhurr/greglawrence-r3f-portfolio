@@ -4,7 +4,7 @@
 module.exports = {
   siteMetadata: {
     title: `Greg Lawrence R3F Portfolio`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://www.yourdomain.tld`,
   },
-  plugins: ["gatsby-plugin-sitemap"]
+  plugins: ["gatsby-plugin-sitemap", "gatsby-plugin-postcss"],
 };
